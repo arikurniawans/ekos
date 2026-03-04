@@ -22,7 +22,7 @@
                 <tr>
                     <th>No</th>
                     <th>Nomor</th>
-                    <th>Kapasitas</th>
+                    <th>Kapasitas Tersisa</th>
                     <th>Tarif</th>
                     <th class="text-center" width="120">Status</th>
                     <th class="text-center" width="150">Aksi</th>

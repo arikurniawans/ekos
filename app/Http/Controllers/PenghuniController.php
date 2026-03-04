@@ -29,6 +29,7 @@ class PenghuniController extends Controller
             'no_ktp'        => 'required|digits:16',
             'no_hp'         => 'required|regex:/^08\d{8,11}$/',
             'id_kamar'      => 'required',
+            'kategori_kos'  => 'required|in:Bulanan,Tahunan',
             'tanggal_masuk' => 'required|date',
             'foto_ktp'      => 'required|image|mimes:jpg,jpeg,png|max:2048'
         ]);
@@ -54,6 +55,7 @@ class PenghuniController extends Controller
                 'no_ktp'        => $request->no_ktp,
                 'no_hp'         => $request->no_hp,
                 'id_kamar'      => $request->id_kamar,
+                'kategori_kos'  => $request->kategori_kos,
                 'tanggal_masuk' => $request->tanggal_masuk,
                 'file_ktp'      => $foto
             ]);
@@ -99,6 +101,7 @@ class PenghuniController extends Controller
             'no_hp'         => 'required',
             'tanggal_masuk' => 'required|date',
             'id_kamar'      => 'required',
+            'kategori_kos'  => 'required|in:Bulanan,Tahunan',
             'foto_ktp'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
         ]);
 
@@ -160,6 +163,7 @@ class PenghuniController extends Controller
             // ===============================
             $penghuni->nama_penghuni = $request->nama_penghuni;
             $penghuni->no_hp         = $request->no_hp;
+            $penghuni->kategori_kos = $request->kategori_kos;
             $penghuni->tanggal_masuk = $request->tanggal_masuk;
 
             $penghuni->save();

@@ -85,6 +85,33 @@
 
                     <!-- ROW 3 -->
                     <div class="row">
+
+                        <!-- Kategori Kos -->
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Kategori Kos</label>
+
+                            <select name="kategori_kos"
+                                    class="form-select @error('kategori_kos') is-invalid @enderror">
+
+                                <option value="Bulanan"
+                                    {{ old('kategori_kos', $penghuni->kategori_kos) == 'Bulanan' ? 'selected' : '' }}>
+                                    Bulanan
+                                </option>
+
+                                <option value="Tahunan"
+                                    {{ old('kategori_kos', $penghuni->kategori_kos) == 'Tahunan' ? 'selected' : '' }}>
+                                    Tahunan
+                                </option>
+
+                            </select>
+
+                            @error('kategori_kos')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+
                         <div class="col-md-6 mb-3">
                             <label class="form-label">Tanggal Masuk</label>
                             <input type="date"

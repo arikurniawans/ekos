@@ -23,6 +23,7 @@ class Penghuni extends Model
         'file_ktp',
         'no_hp',
         'id_kamar',
+        'kategori_kos',
         'tanggal_masuk',
         'kategori_kos'
     ];

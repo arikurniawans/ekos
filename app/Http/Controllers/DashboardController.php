@@ -18,8 +18,13 @@ class DashboardController extends Controller
         // DATA SUMMARY
         // ===============================
         $totalKamar = Kamar::count();
-        $kamarKosong = Kamar::where('status', 'Kosong')->count();
-        $kamarTerisi = Kamar::where('status', 'Terisi')->count();
+
+        // jumlah penghuni = kamar terisi
+        $kamarTerisi = Penghuni::count();
+
+        // kamar kosong = total kamar - kamar terisi
+        $kamarKosong = $totalKamar - $kamarTerisi;
+
         $totalPenghuni = Penghuni::count();
 
         // ===============================
@@ -84,4 +89,5 @@ class DashboardController extends Controller
             'tahun'
         ));
     }
+
 }

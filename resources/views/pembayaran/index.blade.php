@@ -80,15 +80,32 @@
                     <td class="text-center">
 
                         {{-- Tombol Bayar: disabled jika Lunas/Belum Jatuh Tempo --}}
+                        {{-- ================= TOMBOL BAYAR ================= --}}
                         @if($sudahLunas)
                             <button class="btn btn-primary btn-sm px-2" disabled title="Pembayaran masih aktif">
                                 <i class="bi bi-cash"></i> Bayar
                             </button>
                         @else
                             <a href="{{ route('pembayaran.create', ['penghuni' => $item->id_penghuni]) }}"
-                               class="btn btn-primary btn-sm px-2">
+                            class="btn btn-primary btn-sm px-2">
                                 <i class="bi bi-cash"></i> Bayar
                             </a>
+                        @endif
+
+
+                        {{-- ================= TOMBOL PRINT KWITANSI ================= --}}
+                        @if(str_contains($statusLabel, 'Lunas'))
+                        <a href="{{ route('pembayaran.kwitansi', ['penghuni' => $item->id_penghuni]) }}"
+                        class="btn btn-success btn-sm px-2"
+                        target="_blank">
+                            <i class="bi bi-printer"></i> Kwitansi
+                        </a>
+                        @else
+                        <button class="btn btn-success btn-sm px-2"
+                                disabled
+                                title="Belum ada pembayaran">
+                            <i class="bi bi-printer"></i> Kwitansi
+                        </button>
                         @endif
 
                         {{-- <a href="{{ route('pembayaran.detail',['penghuni'=>$item->id_penghuni]) }}"

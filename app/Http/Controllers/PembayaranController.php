@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class PembayaranController extends Controller
 {
@@ -16,7 +17,7 @@ class PembayaranController extends Controller
     // =====================================
     public function index()
     {
-        $penghuni = \App\Models\Penghuni::with('pembayaran')
+        $penghuni = Penghuni::with('pembayaran')
             ->orderBy('nama_penghuni')
             ->get();
 
@@ -147,4 +148,67 @@ class PembayaranController extends Controller
         return redirect()->route('pembayaran.index')
                          ->with('success', 'Data pembayaran berhasil dihapus');
     }
+
+    public function kwitansi($penghuni)
+    {
+        Carbon::setLocale('id');
+
+        $data = Pembayaran::with(['penghuni.kamar'])
+            ->where('id_penghuni', $penghuni)
+            ->orderBy('tanggal_bayar', 'desc')
+            ->first();
+
+        if (!$data) {
+            abort(404);
+        }
+
+        $terbilang = strtoupper($this->terbilang($data->jumlah_bayar)) . ' RUPIAH';
+
+        $tanggal = Carbon::now()->format('Y-m-d');
+
+        $namaFile = "Kwitansi-Salsabila-{$tanggal}.pdf";
+
+        $pdf = Pdf::loadView('pembayaran.kwitansi', compact('data', 'terbilang'))
+                ->setPaper('A5', 'landscape')
+                ->setOption([
+                    'margin-top'           => 14,
+                    'margin-right'         => 14,
+                    'margin-bottom'        => 14,
+                    'margin-left'          => 14,
+                    'isHtml5ParserEnabled' => true,
+                    'dpi'                  => 96,
+                ]);
+
+        return $pdf->stream($namaFile);
+    }
+
+    private function penyebut($nilai)
+    {
+        $nilai = abs($nilai);
+        $huruf = ["", "satu", "dua", "tiga", "empat", "lima",
+                "enam", "tujuh", "delapan", "sembilan",
+                "sepuluh", "sebelas"];
+
+        if ($nilai < 12) {
+            return " " . $huruf[$nilai];
+        } else if ($nilai < 20) {
+            return $this->penyebut($nilai - 10) . " belas";
+        } else if ($nilai < 100) {
+            return $this->penyebut($nilai / 10) . " puluh" . $this->penyebut($nilai % 10);
+        } else if ($nilai < 200) {
+            return " seratus" . $this->penyebut($nilai - 100);
+        } else if ($nilai < 1000) {
+            return $this->penyebut($nilai / 100) . " ratus" . $this->penyebut($nilai % 100);
+        } else if ($nilai < 2000) {
+            return " seribu" . $this->penyebut($nilai - 1000);
+        } else if ($nilai < 1000000) {
+            return $this->penyebut($nilai / 1000) . " ribu" . $this->penyebut($nilai % 1000);
+        }
+    }
+
+    private function terbilang($nilai)
+    {
+        return trim($this->penyebut($nilai));
+    }
+
 }

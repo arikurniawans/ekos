@@ -137,7 +137,7 @@ class LaporanController extends Controller
             return back()->with('error', 'Kategori belum dipilih');
         }
 
-        $penghuni = \App\Models\Penghuni::with(['kamar','pembayaran'])
+        $penghuni = Penghuni::with(['kamar','pembayaran'])
             ->where('kategori_kos', $kategori)
             ->get();
 

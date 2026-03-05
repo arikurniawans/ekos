@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/update/{id}', 'update')->name('update');
         Route::put('/batal/{penghuni}', 'batal')->name('batal');
         Route::delete('/delete/{id}', 'destroy')->name('destroy');
+        Route::get('/kwitansi/{penghuni}', 'kwitansi')->name('kwitansi');
     });
 
     // ================= LAPORAN =================

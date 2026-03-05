@@ -8,6 +8,7 @@
                 </a>
             </li>
         </ul>
+        <b>KOS-KOSAN SALSABILA</b>
 
         <ul class="navbar-nav ms-auto">
             <li class="nav-item dropdown user-menu">
